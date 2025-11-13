@@ -1,13 +1,13 @@
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_anthropic import ChatAnthropic
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 import os
 
 def parse_resume(text: str) -> str:
     """
-    Parses a resume text using Langchain and Gemini to generate a JSON-resume format.
+    Parses a resume text using Langchain and Claude to generate a JSON-resume format.
     """
-    llm = ChatGoogleGenerativeAI(model="gemini-pro")
+    llm = ChatAnthropic(model="claude-3-opus-20240229")
 
     prompt = PromptTemplate(
         input_variables=["resume_text"],

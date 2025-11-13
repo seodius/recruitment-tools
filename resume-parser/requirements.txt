@@ -5,7 +5,7 @@ python-multipart
 pypdf
 langchain
 langchain-community
-langchain-google-genai
+langchain-anthropic
 beautifulsoup4
 markdown
 python-docx

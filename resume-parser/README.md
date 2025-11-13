@@ -7,7 +7,7 @@ This is a FastAPI application that takes an email address and a resume in `.doc`
 - Extracts text from various resume formats.
 - Extracts text from `.docx` files using `python-docx`.
 - Extracts text from `.pdf` files using `PDFLoader` from `langchain`.
-- Parses the resume text into the JSON-resume format using Langchain and Gemini.
+- Parses the resume text into the JSON-resume format using Langchain and Claude.
 - Validates the email address provided in the request against the one found in the resume.
 - Stores the original resume, the extracted text, and the parsed JSON.
 
@@ -30,16 +30,16 @@ This is a FastAPI application that takes an email address and a resume in `.doc`
     pip install -r requirements.txt
     ```
 
-4.  **Configure your Google API Key for Gemini:**
+4.  **Configure your Anthropic API Key:**
     - Create a `.env` file by copying the `.env.example` file:
       ```bash
       cp .env.example .env
       ```
-    - Go to the [Google AI Studio](https://aistudio.google.com/).
+    - Go to the [Anthropic Console](https://console.anthropic.com/).
     - Create a new API key.
-    - Open the `.env` file and add your Google API key:
+    - Open the `.env` file and add your Anthropic API key:
       ```
-      GOOGLE_API_KEY="YOUR_GOOGLE_API_KEY"
+      ANTHROPIC_API_KEY="YOUR_ANTHROPIC_API_KEY"
       ```
 
 ## Usage
@@ -55,10 +55,21 @@ This is a FastAPI application that takes an email address and a resume in `.doc`
 3.  **Upload a resume:**
     Use the `/upload-resume/` endpoint to upload a resume. You'll need to provide your email address and the resume file.
 
+### cURL Example
+
+```bash
+curl -X 'POST' \
+  'http://127.0.0.1:8000/upload-resume/' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: multipart/form-data' \
+  -F 'email=your-email@example.com' \
+  -F 'file=@/path/to/your/resume.pdf'
+```
+
 ## Project Structure
 
 - `main.py`: The main FastAPI application.
 - `text_extractor.py`: Extracts text from different file formats.
-- `resume_parser.py`: Parses the resume text using Langchain and Gemini.
+- `resume_parser.py`: Parses the resume text using Langchain and Claude.
 - `requirements.txt`: The list of Python dependencies.
 - `resumes/`: The directory where the uploaded resumes, extracted text, and parsed JSON are stored.
