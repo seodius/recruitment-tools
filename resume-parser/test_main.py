@@ -3,6 +3,7 @@ from fastapi.testclient import TestClient
 from main import app
 import os
 from pathlib import Path
+import docx
 
 client = TestClient(app)
 
@@ -18,6 +19,14 @@ def test_upload_resume_unsupported_file():
     response = client.post("/upload-resume/", data={"email": email}, files=files)
     assert response.status_code == 400
     assert "Unsupported file type" in response.json()["detail"]
+
+def test_upload_resume_doc_file():
+    email = "test@example.com"
+    file_content = b"This is a test file."
+    files = {"file": ("test.doc", file_content, "application/msword")}
+    response = client.post("/upload-resume/", data={"email": email}, files=files)
+    assert response.status_code == 400
+    assert "DOC files are not supported. Please convert to DOCX." in response.json()["detail"]
 
 def test_upload_resume_pdf(mocker):
     # Mock the parse_resume function
@@ -47,6 +56,37 @@ def test_upload_resume_pdf(mocker):
 
     # Clean up created files and directories
     os.remove("test.pdf")
+    email_folder_name = email.replace("@", "AT")
+    resume_folder = Path("resumes") / email_folder_name
+    for f in resume_folder.glob("*"):
+        os.remove(f)
+    os.rmdir(resume_folder)
+
+def test_upload_resume_docx(mocker):
+    # Mock the parse_resume function
+    mocker.patch(
+        "main.parse_resume",
+        return_value='{"basics": {"name": "John Doe"}}',
+    )
+
+    email = "test@example.com"
+
+    # Create a dummy DOCX file
+    document = docx.Document()
+    document.add_paragraph("This is a test DOCX.")
+    document.add_paragraph(f"Email: {email}")
+    document.save("test.docx")
+
+    with open("test.docx", "rb") as f:
+        files = {"file": ("test.docx", f, "application/vnd.openxmlformats-officedocument.wordprocessingml.document")}
+        response = client.post("/upload-resume/", data={"email": email}, files=files)
+
+    assert response.status_code == 200
+    assert response.json()["message"] == "Resume parsed successfully."
+    assert "basics" in response.json()
+
+    # Clean up created files and directories
+    os.remove("test.docx")
     email_folder_name = email.replace("@", "AT")
     resume_folder = Path("resumes") / email_folder_name
     for f in resume_folder.glob("*"):

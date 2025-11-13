@@ -5,7 +5,8 @@ This is a FastAPI application that takes an email address and a resume in `.doc`
 ## Features
 
 - Extracts text from various resume formats.
-- Converts `.docx` files to `.pdf` using the Google Drive API.
+- Extracts text from `.docx` files using `python-docx`.
+- Extracts text from `.pdf` files using `PDFLoader` from `langchain`.
 - Parses the resume text into the JSON-resume format using Langchain and Gemini.
 - Validates the email address provided in the request against the one found in the resume.
 - Stores the original resume, the extracted text, and the parsed JSON.
@@ -28,13 +29,6 @@ This is a FastAPI application that takes an email address and a resume in `.doc`
     ```bash
     pip install -r requirements.txt
     ```
-
-3.  **Configure Google Drive API credentials:**
-    - Go to the [Google Cloud Console](https://console.cloud.google.com/).
-    - Create a new project.
-    - Enable the "Google Drive API".
-    - Create credentials for a "Desktop app".
-    - Download the `credentials.json` file and place it in the root of the project.
 
 4.  **Configure your Google API Key for Gemini:**
     - Create a `.env` file by copying the `.env.example` file:
@@ -64,9 +58,7 @@ This is a FastAPI application that takes an email address and a resume in `.doc`
 ## Project Structure
 
 - `main.py`: The main FastAPI application.
-- `google_drive.py`: Handles the Google Drive API integration for `.docx` to `.pdf` conversion.
 - `text_extractor.py`: Extracts text from different file formats.
 - `resume_parser.py`: Parses the resume text using Langchain and Gemini.
 - `requirements.txt`: The list of Python dependencies.
-- `credentials.json`: Your Google Drive API credentials.
 - `resumes/`: The directory where the uploaded resumes, extracted text, and parsed JSON are stored.
