@@ -37,13 +37,16 @@ This is a FastAPI application that takes an email address and a resume in `.doc`
     - Download the `credentials.json` file and place it in the root of the project.
 
 4.  **Configure your Google API Key for Gemini:**
+    - Create a `.env` file by copying the `.env.example` file:
+      ```bash
+      cp .env.example .env
+      ```
     - Go to the [Google AI Studio](https://aistudio.google.com/).
     - Create a new API key.
-    - Set the `GOOGLE_API_KEY` environment variable:
-      ```bash
-      export GOOGLE_API_KEY="YOUR_GOOGLE_API_KEY"
+    - Open the `.env` file and add your Google API key:
       ```
-    - Alternatively, you can uncomment and set the `os.environ["GOOGLE_API_KEY"]` line in `resume_parser.py` and `main.py`.
+      GOOGLE_API_KEY="YOUR_GOOGLE_API_KEY"
+      ```
 
 ## Usage
 
