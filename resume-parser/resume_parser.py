@@ -3,9 +3,6 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 import os
 
-# Set your Google API key
-# os.environ["GOOGLE_API_KEY"] = "YOUR_GOOGLE_API_KEY"
-
 def parse_resume(text: str) -> str:
     """
     Parses a resume text using Langchain and Gemini to generate a JSON-resume format.

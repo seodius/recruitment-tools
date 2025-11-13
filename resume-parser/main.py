@@ -1,6 +1,9 @@
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from pydantic import BaseModel, EmailStr
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 import datetime
 import re
 from pathlib import Path
@@ -51,9 +54,6 @@ async def upload_resume(email: EmailStr = Form(...), file: UploadFile = File(...
     # Compare parsed email with email provided in the endpoint.
     if not parsed_email or parsed_email.group(0) != email:
         raise HTTPException(status_code=400, detail="Email address in resume does not match the provided email.")
-
-    # Set your Google API key
-    # os.environ["GOOGLE_API_KEY"] = "YOUR_GOOGLE_API_KEY"
 
     # Parse the txt using langchain and gemini into JSON-resume format.
     try:
